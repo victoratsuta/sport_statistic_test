@@ -1,14 +1,24 @@
 <?php
 
 namespace App\Document;
+use App\Document\Traits\DocumentSerializer;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use App\Repository\LigaRepository;
+use Doctrine\ODM\MongoDB\Mapping\Annotations\ReferenceOne;
 
 /**
- * @MongoDB\Document
+ * @MongoDB\Document(repositoryClass=LigaRepository::class)
  */
 
-class Liga
+class Liga implements BaseDocument
 {
+    use DocumentSerializer;
+
+    const UEFA = 'uefa';
+    const SUPER_LIGA = 'superLiga';
+    const NY = 'NY';
+    const SV = 'SV';
+
     /**
      * @MongoDB\Id
      */
@@ -23,6 +33,11 @@ class Liga
      * @MongoDB\Field(type="collection")
      */
     protected $names;
+
+    /**
+     * @ReferenceOne(targetDocument=Sport::class, storeAs="id", name="sport")
+     */
+    protected $sport;
 
     /**
      * @return mixed
@@ -54,5 +69,37 @@ class Liga
     public function setNames($names): void
     {
         $this->names = $names;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSport()
+    {
+        return $this->sport;
+    }
+
+    /**
+     * @param mixed $sport
+     */
+    public function setSport($sport): void
+    {
+        $this->sport = $sport;
     }
 }

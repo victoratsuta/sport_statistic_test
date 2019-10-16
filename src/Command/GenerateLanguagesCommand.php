@@ -29,17 +29,17 @@ class GenerateLanguagesCommand extends Command
         try {
 
             $items = [
-                "en" => [
+                Language::EN => [
                     "en",
                     "ENG",
                     "EN"
                 ],
-                "fr" => [
+                Language::FR => [
                     "fr",
                     "FRANCE",
                     "FR"
                 ],
-                "gr" => [
+                Language::GR => [
                     "gr",
                     "GERM",
                     "GR"

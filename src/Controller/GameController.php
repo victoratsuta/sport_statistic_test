@@ -2,16 +2,23 @@
 
 namespace App\Controller;
 
+use App\DataAdapters\GameAdapter;
+use App\Document\BaseDocument;
+use App\Document\Game;
+use App\Document\GameBuffer;
+use App\Document\Sport;
 use App\Entity\Movie;
 use App\Form\MovieType;
+use App\Validator\GetGameValidator;
+use Doctrine\ODM\MongoDB\DocumentManager;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
+use JMS\Serializer\SerializerBuilder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Movie controller.
  * @Route("/api", name="api_")
  */
 class GameController extends FOSRestController
@@ -19,52 +26,36 @@ class GameController extends FOSRestController
     /**
      * @Rest\Get("/game")
      *
+     * @param Request $request
+     * @param DocumentManager $dm
      * @return Response
      */
-    public function getGameAction()
+    public function getGameAction(Request $request, DocumentManager $dm)
     {
-//        $repository = $this->getDoctrine()->getRepository(Movie::class);
-//        $movies = $repository->findall();
+        $violations = (new GetGameValidator($request))->validate();
 
-        // get filters param
+        if(count($violations)){
+            return $this->handleView($this->view($violations));
+        }
 
-        // fetch data by random game with filtered game_buffer data
+        $randomGame = $dm->getRepository(Game::class)->getByFiltersRandomValue([
+            "source" => $request->query->get('source'),
+            "from" => $request->query->get('from'),
+            "to" => $request->query->get('to'),
+        ]);
 
-//        return object like this
-//        {
-//            lang: en,
-//            ...,
-//            game_buffer: {
-//              lang: en
-//            }
-//        }
+        if($randomGame){
+            $gameBuffers = $dm->getRepository(GameBuffer::class)->getByGameId($randomGame->getId());
+            $randomGame->setGameBufferCount(count($gameBuffers));
+        }
 
-        $data = [
-            "sport" => "footbal",
-            "liga" => "UEFA",
-            "command_1" => "qwe",
-            "command_1" => "asd",
-            "start_time" => "12:00",
+        $result = $randomGame instanceof BaseDocument ? $randomGame->toArray() : [];
 
-            "game_buffer" => [
-                "lang" => "en",
-                "sport" => "footbal",
-                "liga" => "UEFA",
-                "command_1" => "qwe",
-                "command_1" => "asd",
-                "start_time" => "12:00",
-                "source" => "TV",
-                "original_data" => ["data"],
-            ],
-        ];
-
-        return $this->handleView($this->view($data));
+        return $this->handleView($this->view($result));
     }
 
     /**
-     * Create Movie.
      * @Rest\Post("/game")
-     *
      * @return Response
      */
     public function postGameAction(Request $request)

@@ -2,23 +2,27 @@
 
 namespace App\Document;
 
-
+use App\Document\Traits\DocumentSerializer;
+use App\Repository\TeamRepository;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use Doctrine\ODM\MongoDB\Mapping\Annotations\ReferenceOne;
 
 /**
- * @MongoDB\Document
+ * @MongoDB\Document(repositoryClass=TeamRepository::class)
  */
-class Team
+class Team implements BaseDocument
 {
+    use DocumentSerializer;
+
     /**
      * @MongoDB\Id
      */
     protected $id;
 
     /**
-     * @MongoDB\Field(type="string", name="sport_id")
+     * @ReferenceOne(targetDocument=Sport::class, storeAs="id", name="sport")
      */
-    protected $sportId;
+    protected $sport;
 
     /**
      * @MongoDB\Field(type="collection")
@@ -45,16 +49,32 @@ class Team
     /**
      * @return mixed
      */
-    public function getSportId()
+    public function getId()
     {
-        return $this->sportId;
+        return $this->id;
     }
 
     /**
-     * @param mixed $sportId
+     * @param mixed $id
      */
-    public function setSportId($sportId): void
+    public function setId($id): void
     {
-        $this->sportId = $sportId;
+        $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSport()
+    {
+        return $this->sport;
+    }
+
+    /**
+     * @param mixed $sport
+     */
+    public function setSport($sport): void
+    {
+        $this->sport = $sport;
     }
 }

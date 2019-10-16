@@ -2,14 +2,17 @@
 
 namespace App\Document;
 
+use App\Document\Traits\DocumentSerializer;
 use App\Repository\SportRepository;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 
 /**
  * @MongoDB\Document(repositoryClass=SportRepository::class)
  */
-class Sport
+class Sport implements BaseDocument
 {
+    use DocumentSerializer;
+
     const FOOTBALL = 'football';
     const BASEBALL = 'baseball';
 

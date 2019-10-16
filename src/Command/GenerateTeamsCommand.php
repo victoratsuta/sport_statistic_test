@@ -31,21 +31,21 @@ class GenerateTeamsCommand extends Command
 
             $items = [
                 [
-                    "sport_id" => $this->dm->getRepository(Sport::class)->getIdByKey(Sport::FOOTBALL),
+                    "sport" => $this->dm->getRepository(Sport::class)->getByKey(Sport::FOOTBALL),
                     "names" => [
                         "barcelona",
                         "BARCA",
                     ]
                 ],
                 [
-                    "sport_id" => $this->dm->getRepository(Sport::class)->getIdByKey(Sport::BASEBALL),
+                    "sport" => $this->dm->getRepository(Sport::class)->getByKey(Sport::BASEBALL),
                     "names" => [
                         "milan",
                         "FC MILAN",
                     ]
                 ],
                 [
-                    "sport_id" => $this->dm->getRepository(Sport::class)->getIdByKey(Sport::FOOTBALL),
+                    "sport" => $this->dm->getRepository(Sport::class)->getByKey(Sport::FOOTBALL),
                     "names" => [
                         "YANKI",
                         "yankees",
@@ -57,7 +57,7 @@ class GenerateTeamsCommand extends Command
             foreach ($items as $value) {
 
                 $model = new Team();
-                $model->setSportId($value['sport_id']);
+                $model->setSport($value['sport']);
                 $model->setNames($value['names']);
                 $this->dm->persist($model);
                 $this->dm->flush();

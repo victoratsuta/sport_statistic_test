@@ -2,14 +2,7 @@
 
 namespace App\Repository;
 
-use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
-
-class SportRepository extends DocumentRepository
+class SportRepository extends BasicRepository
 {
-    public function getIdByKey(string $key)
-    {
-        return $this
-            ->findOneBy(['key' => $key])
-            ->getId();
-    }
+
 }

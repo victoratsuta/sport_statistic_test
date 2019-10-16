@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Document\Liga;
+use App\Document\Sport;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -30,23 +31,47 @@ class GenerateLigasCommand extends Command
         try {
 
             $items = [
-                "uefa" => [
-                    "UEFA",
-                    "liga Uefa",
+                [
+                    "key" => Liga::UEFA,
+                    "sport" => $this->dm->getRepository(Sport::class)->getByKey(Sport::FOOTBALL),
+                    "names" => [
+                        "UEFA",
+                        "liga Uefa",
+                    ]
                 ],
-                "superLiga" => [
-                    "super super Liga",
-                    "LIGASUPER",
-                    "FR"
-                ]
+                [
+                    "key" => Liga::SUPER_LIGA,
+                    "sport" => $this->dm->getRepository(Sport::class)->getByKey(Sport::FOOTBALL),
+                    "names" => [
+                        "super super Liga",
+                        "LIGASUPER",
+                    ]
+                ],
+                [
+                    "key" => Liga::NY,
+                    "sport" => $this->dm->getRepository(Sport::class)->getByKey(Sport::BASEBALL),
+                    "names" => [
+                        "new york",
+                        "ny",
+                    ]
+                ],
+                [
+                    "key" => Liga::SV,
+                    "sport" => $this->dm->getRepository(Sport::class)->getByKey(Sport::BASEBALL),
+                    "names" => [
+                        "SV",
+                        "sv",
+                    ]
+                ],
 
             ];
 
-            foreach ($items as $key => $possibleValues) {
+            foreach ($items as $value) {
 
                 $model = new Liga();
-                $model->setKey($key);
-                $model->setNames($possibleValues);
+                $model->setKey($value['key']);
+                $model->setNames($value['names']);
+                $model->setSport($value['sport']);
                 $this->dm->persist($model);
                 $this->dm->flush();
             }
