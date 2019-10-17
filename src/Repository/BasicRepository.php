@@ -37,4 +37,9 @@ class BasicRepository extends DocumentRepository
         return $qb->getQuery()->getSingleResult();
 
     }
+
+    public function findByNames($name)
+    {
+        return $this->findOneBy(['names' => $name]);
+    }
 }

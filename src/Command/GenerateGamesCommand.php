@@ -37,7 +37,7 @@ class GenerateGamesCommand extends Command
             $items = [];
 
 
-            for ($i = 0; $i < 150; $i++) {
+            for ($i = 0; $i < 15; $i++) {
 
                 $sports = [Sport::FOOTBALL, Sport::BASEBALL]    ;
                 $sportKey = $sports[array_rand($sports)];

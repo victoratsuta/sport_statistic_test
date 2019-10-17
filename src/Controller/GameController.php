@@ -6,14 +6,15 @@ use App\DataAdapters\GameAdapter;
 use App\Document\BaseDocument;
 use App\Document\Game;
 use App\Document\GameBuffer;
-use App\Document\Sport;
 use App\Entity\Movie;
 use App\Form\MovieType;
+use App\Services\GameSaver;
 use App\Validator\GetGameValidator;
+use App\Validator\SetGameValidator;
 use Doctrine\ODM\MongoDB\DocumentManager;
+use Exception;
+use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\Controller\FOSRestController;
-use JMS\Serializer\SerializerBuilder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,8 +22,19 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @Route("/api", name="api_")
  */
-class GameController extends FOSRestController
+class GameController extends AbstractFOSRestController
 {
+
+    /**
+     * @var DocumentManager
+     */
+    private $dm;
+
+    public function __construct(DocumentManager $dm)
+    {
+        $this->dm = $dm;
+    }
+
     /**
      * @Rest\Get("/game")
      *
@@ -35,7 +47,7 @@ class GameController extends FOSRestController
         $violations = (new GetGameValidator($request))->validate();
 
         if(count($violations)){
-            return $this->handleView($this->view($violations));
+            return $this->handleView($this->view($violations, 403));
         }
 
         $randomGame = $dm->getRepository(Game::class)->getByFiltersRandomValue([
@@ -56,39 +68,27 @@ class GameController extends FOSRestController
 
     /**
      * @Rest\Post("/game")
-     * @return Response
      */
     public function postGameAction(Request $request)
     {
-//        $movie = new Movie();
-//        $form = $this->createForm(MovieType::class, $movie);
-//        $data = json_decode($request->getContent(), true);
-//        $form->submit($data);
-//        if ($form->isSubmitted() && $form->isValid()) {
-//            $em = $this->getDoctrine()->getManager();
-//            $em->persist($movie);
-//            $em->flush();
-//            return $this->handleView($this->view(['status' => 'ok'], Response::HTTP_CREATED));
-//        }
 
-        // check array or item and set validation
+        $violations = (new SetGameValidator($request))->validate();
 
-        $games = [];
-
-        foreach ($games as $game) {
-
-            // save to game_buffer if this first one
-            // create object for searching in game
-            // resolve time question
-            // create new or merge
-
+        if (count($violations)) {
+            return $this->handleView($this->view($violations, 403));
         }
 
-        // send 200 or 500
+        $data = $request->request->get('data');
+        $games = SetGameValidator::isAssoc($data) ? [$data] : $data;
 
-        return [];
+        try {
+            (new GameSaver($games, $this->dm))->save();
+        } catch (Exception $e) {
+            return $this->handleView($this->view($e->getMessage(), 500));
+        }
 
-//        return $this->handleView($this->view($form->getErrors()));
+        return $this->handleView($this->view([]));
+
     }
 
 

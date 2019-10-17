@@ -32,13 +32,13 @@ class GetGameValidator
 
         if($this->request->query->get('from')){
             $rules["from"] = [
-                new Assert\Date()
+                new Assert\DateTime()
             ];
         }
 
         if($this->request->query->get('to')){
             $rules["to"] = [
-                new Assert\Date()
+                new Assert\DateTime()
             ];
         }
 
