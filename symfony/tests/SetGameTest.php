@@ -19,6 +19,21 @@ class SetGameTest extends WebTestCase
 
     private $dm;
 
+    protected function setUp()
+    {
+
+        $kernel = self::bootKernel();
+
+        $this->dm = $kernel->getContainer()
+            ->get("doctrine_mongodb")
+            ->getManager();
+
+        $process = Process::fromShellCommandline('./bin/setdb.sh');
+        $process->run();
+
+
+    }
+
     public function testValidationWrong()
     {
 
@@ -262,21 +277,6 @@ class SetGameTest extends WebTestCase
 
         $this->assertEquals($gameCountBefore + 1, $gameCountAfter);
         $this->assertEquals($gameBufferCountBefore + 1, $gameBufferCountAfter);
-
-    }
-
-    protected function setUp()
-    {
-
-        $kernel = self::bootKernel();
-
-        $this->dm = $kernel->getContainer()
-            ->get("doctrine_mongodb")
-            ->getManager();
-
-        $process = new Process('./setdb.sh');
-        $process->run();
-
 
     }
 

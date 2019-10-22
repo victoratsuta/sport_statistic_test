@@ -8,7 +8,6 @@ services:
                 - timezone=${TZ}
         volumes:
             - ./symfony:/srv:rw,cached
-            - app_log:./symfony/var/log
         env_file:
             - symfony/.env
         environment:

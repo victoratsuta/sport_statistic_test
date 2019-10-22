@@ -37,7 +37,7 @@ class GenerateSportsCommand extends Command
                 ],
                 Sport::BASEBALL => [
                     "BAse ball",
-                    "baseball",
+                    Sport::BASEBALL,
                     "BB"
                 ]
 

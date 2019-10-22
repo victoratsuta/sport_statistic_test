@@ -54,6 +54,7 @@ class GenerateLigasCommand extends Command
                     "names" => [
                         "new york",
                         "ny",
+                        Liga::NY
                     ]
                 ],
                 [

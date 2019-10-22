@@ -4,12 +4,29 @@ namespace App\Tests;
 
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\Process\Process;
 
 class GetGameTest extends WebTestCase
 {
     // check validation
     // check filters
     // check buffer count
+
+    protected function setUp()
+    {
+
+        $kernel = self::bootKernel();
+
+        $this->dm = $kernel->getContainer()
+            ->get("doctrine_mongodb")
+            ->getManager();
+
+        $process = Process::fromShellCommandline('./bin/setdb.sh');
+        $process->run();
+
+
+    }
+
 
     public function testValidationNoFilterParams()
     {
@@ -62,9 +79,7 @@ class GetGameTest extends WebTestCase
     {
 
         $client = static::createClient();
-        $client->request('GET', '/api/game', [
-            "source" => 'facebook',
-        ]);
+        $client->request('GET', '/api/game');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertTrue(!empty(json_decode($client->getResponse()->getContent(), true)));
 
