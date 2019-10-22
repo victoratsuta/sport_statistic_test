@@ -41,3 +41,15 @@ Create single game item
 
 ### Get game
 ![Get game](screenshots/get.png)
+
+# DB
+Here is some screenshots with database design and relations between collections with fake data
+
+### All collections
+![All collections](screenshots/collections.png)
+
+### Game collection
+![Game collection](screenshots/game_collection.png)
+
+### Liga collections
+![Liga collections](screenshots/liga_collection.png)
