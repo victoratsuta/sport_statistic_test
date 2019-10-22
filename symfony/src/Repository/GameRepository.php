@@ -10,27 +10,28 @@ use MongoDB\BSON\ObjectID as ObjectIDAlias;
 
 class GameRepository extends BasicRepository
 {
-    public function getByFiltersRandomValue(array $values){
+    public function getByFiltersRandomValue(array $values)
+    {
 
         $qb = $this
             ->createQueryBuilder();
 
-        if($values['source']){
+        if ($values['source']) {
             $qb->field('source')->equals($values['source']);
         }
 
-        if($values['from']){
+        if ($values['from']) {
             $date = DateTime::createFromFormat('Y-m-d H:i:s', $values['from']);
             $qb->field('start_time')->gte($date);
         }
 
-        if($values['to']){
+        if ($values['to']) {
             $date = DateTime::createFromFormat('Y-m-d H:i:s', $values['to']);
             $qb->field('start_time')->lte($date);
         }
 
         $count = count($qb->getQuery()->execute()->toArray());
-        $skip_count = $count ? random_int(0, $count-1): 0;
+        $skip_count = $count ? random_int(0, $count - 1) : 0;
         $qb->skip($skip_count);
 
         return $qb->getQuery()->getSingleResult();

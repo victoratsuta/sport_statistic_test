@@ -19,24 +19,25 @@ class GetGameValidator
         $this->request = $request;
     }
 
-    public function validate(){
+    public function validate()
+    {
 
         $rules = [];
 
-        if($this->request->query->get('source')){
+        if ($this->request->query->get('source')) {
             $rules["source"] = [
                 new Assert\Type(['type' => 'string']),
                 new Assert\Length(['max' => 3000]),
             ];
         }
 
-        if($this->request->query->get('from')){
+        if ($this->request->query->get('from')) {
             $rules["from"] = [
                 new Assert\DateTime()
             ];
         }
 
-        if($this->request->query->get('to')){
+        if ($this->request->query->get('to')) {
             $rules["to"] = [
                 new Assert\DateTime()
             ];

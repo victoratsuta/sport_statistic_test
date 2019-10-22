@@ -46,7 +46,7 @@ class GameController extends AbstractFOSRestController
     {
         $violations = (new GetGameValidator($request))->validate();
 
-        if(count($violations)){
+        if (count($violations)) {
             return $this->handleView($this->view($violations, 403));
         }
 
@@ -56,7 +56,7 @@ class GameController extends AbstractFOSRestController
             "to" => $request->query->get('to'),
         ]);
 
-        if($randomGame){
+        if ($randomGame) {
             $gameBuffers = $dm->getRepository(GameBuffer::class)->getByGameId($randomGame->getId());
             $randomGame->setGameBufferCount(count($gameBuffers));
         }

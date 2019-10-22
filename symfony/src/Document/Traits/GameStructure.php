@@ -2,11 +2,11 @@
 
 namespace App\Document\Traits;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations\ReferenceOne;
 use App\Document\Language;
-use App\Document\Sport;
 use App\Document\Liga;
+use App\Document\Sport;
 use App\Document\Team;
+use Doctrine\ODM\MongoDB\Mapping\Annotations\ReferenceOne;
 
 trait GameStructure
 {
@@ -163,18 +163,18 @@ trait GameStructure
     }
 
     /**
-     * @param mixed $id
-     */
-    public function setId($id): void
-    {
-        $this->id = $id;
-    }
-
-    /**
      * @return mixed
      */
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
     }
 }

@@ -5,6 +5,7 @@ namespace App\Command;
 use App\Document\Sport;
 use App\Document\Team;
 use Doctrine\ODM\MongoDB\DocumentManager;
+use Exception;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -64,7 +65,7 @@ class GenerateTeamsCommand extends Command
             }
 
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $output->writeln('Some error');
             $output->writeln($e->getMessage());
             return;

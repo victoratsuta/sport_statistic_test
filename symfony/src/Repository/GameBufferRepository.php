@@ -7,7 +7,8 @@ use MongoDB\BSON\ObjectId as ObjectIDAlias;
 
 class GameBufferRepository extends DocumentRepository
 {
-    public function getByGameId(string $gameId){
+    public function getByGameId(string $gameId)
+    {
 
         return $this
             ->createQueryBuilder()

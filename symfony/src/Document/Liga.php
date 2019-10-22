@@ -1,15 +1,15 @@
 <?php
 
 namespace App\Document;
+
 use App\Document\Traits\DocumentSerializer;
-use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use App\Repository\LigaRepository;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use Doctrine\ODM\MongoDB\Mapping\Annotations\ReferenceOne;
 
 /**
  * @MongoDB\Document(repositoryClass=LigaRepository::class)
  */
-
 class Liga implements BaseDocument
 {
     use DocumentSerializer;

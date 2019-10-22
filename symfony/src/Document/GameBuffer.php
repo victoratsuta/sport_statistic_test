@@ -6,7 +6,6 @@ use App\Document\Traits\DocumentSerializer;
 use App\Document\Traits\GameStructure;
 use App\Repository\GameBufferRepository;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
-use App\Document\Game;
 use Doctrine\ODM\MongoDB\Mapping\Annotations\ReferenceOne;
 
 /**

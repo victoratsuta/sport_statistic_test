@@ -13,7 +13,7 @@ class BasicRepository extends DocumentRepository
 
         $qb = $this->createQueryBuilder();
         $count = count($qb->getQuery()->execute()->toArray());
-        $skip_count = random_int(0, $count-1);
+        $skip_count = random_int(0, $count - 1);
         $qb->skip($skip_count);
 
         return $qb->getQuery()->getSingleResult();
@@ -31,7 +31,7 @@ class BasicRepository extends DocumentRepository
     {
         $qb = $this->createQueryBuilder()->field('sport')->equals($sportId);
         $count = count($qb->getQuery()->execute()->toArray());
-        $skip_count = random_int(0, $count-1);
+        $skip_count = random_int(0, $count - 1);
         $qb->skip($skip_count);
 
         return $qb->getQuery()->getSingleResult();

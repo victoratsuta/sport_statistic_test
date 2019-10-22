@@ -9,6 +9,8 @@ use App\Document\Liga;
 use App\Document\Sport;
 use App\Document\Team;
 use Doctrine\ODM\MongoDB\DocumentManager;
+use Exception;
+use MongoDB\BSON\ObjectID;
 use MongoDB\BSON\UTCDateTime as UTCDateTimeAlias;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -39,7 +41,7 @@ class GenerateGamesCommand extends Command
 
             for ($i = 0; $i < 15; $i++) {
 
-                $sports = [Sport::FOOTBALL, Sport::BASEBALL]    ;
+                $sports = [Sport::FOOTBALL, Sport::BASEBALL];
                 $sportKey = $sports[array_rand($sports)];
 
                 $sport = $this->dm->getRepository(Sport::class)->getByKey($sportKey);
@@ -49,7 +51,7 @@ class GenerateGamesCommand extends Command
                 $teamSecond = $this->dm->getRepository(Team::class)->getRandomBySport($sport->getId());
 
 
-                $time =new UTCDateTimeAlias();
+                $time = new UTCDateTimeAlias();
 
                 $items[] = [
                     "sport" => $sport,
@@ -93,7 +95,7 @@ class GenerateGamesCommand extends Command
 
             foreach ($items as $value) {
 
-                $id = new \MongoDB\BSON\ObjectID();
+                $id = new ObjectID();
 
                 $model = new Game();
                 $model->setId($id);
@@ -117,7 +119,7 @@ class GenerateGamesCommand extends Command
                     $model->setTeamSecond($gameBuffer['team_second']);
                     $model->setStartTime($gameBuffer['start_time']);
                     $model->setSource($gameBuffer['source']);
-                    $model->setGame( $this->dm->getRepository(Game::class)->find($id));
+                    $model->setGame($this->dm->getRepository(Game::class)->find($id));
 
                     $this->dm->persist($model);
                     $this->dm->flush();
@@ -126,7 +128,7 @@ class GenerateGamesCommand extends Command
             }
 
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $output->writeln('Some error');
             $output->writeln($e->getMessage());
             return;

@@ -3,8 +3,8 @@
 namespace App\Document;
 
 use App\Document\Traits\DocumentSerializer;
-use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use App\Repository\LanguageRepository;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 
 /**
  * @MongoDB\Document(repositoryClass=LanguageRepository::class)
